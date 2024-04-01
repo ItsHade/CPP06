@@ -1,8 +1,8 @@
-SRC = main.cpp 
+SRC = main.cpp ScalarConverter.cpp
 
 OBJ = ${SRC:.cpp=.o}
 
-NAME = Intern
+NAME = ScalarConverter
 
 CC = c++
 

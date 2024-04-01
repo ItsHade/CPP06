@@ -26,16 +26,37 @@ ScalarConverter & ScalarConverter::operator =(ScalarConverter const & src)
     return (*this);
 }
 
-static void convert(std::string literal)
+void ScalarConverter::convert(std::string literal)
 {
-    if (literal[0] >= 32 && literal[0] <= 126)
-    {
-        std::cout << "char : " << static_cast<char>(literal[0]) << std::endl;
-        std::cout << "int : " << static_cast<int>(literal[0]) << std::endl;
-        std::cout << "float : " << static_cast<float>(literal[0]) << std::endl;
-        std::cout << "double : " << static_cast<double>(literal[0]) << std::endl;
+    // Convert to char
+    if (literal.size() == 3 && literal[0] == '\'' && literal[2] == '\'') {
+        char value = literal[1];
+        std::cout << "Char: " << value << std::endl;
     }
-    else
-        std::cout << "Non displayable character is not a valid input!" << std::endl;
+    // Convert to int
+    else {
+        std::istringstream iss(literal);
+        int intValue;
+        iss >> intValue;
+        if (!iss.fail() && iss.eof()) {
+            std::cout << "Int: " << intValue << std::endl;
+        } else {
+            iss.clear();
+            float floatValue;
+            iss >> floatValue;
+            if (!iss.fail() && iss.eof()) {
+                std::cout << "Float: " << floatValue << std::endl;
+            } else {
+                iss.clear();
+                double doubleValue;
+                iss >> doubleValue;
+                if (!iss.fail() && iss.eof()) {
+                    std::cout << "Double: " << doubleValue << std::endl;
+                } else {
+                    std::cout << "Invalid input" << std::endl;
+                }
+            }
+        }
+    }
     return ;
 }

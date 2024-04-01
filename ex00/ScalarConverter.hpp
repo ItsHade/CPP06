@@ -3,15 +3,12 @@
 
 #include <iostream>
 #include <string>
+#include <sstream>
 
 class ScalarConverter
 {
 
 public :
-
-    ~ScalarConverter(void);
-
-    ScalarConverter & operator =(ScalarConverter const & src);
 
     static void convert(std::string literal);
 
@@ -19,8 +16,9 @@ private :
 
     ScalarConverter(void);
     ScalarConverter(ScalarConverter const & copy);
+    ~ScalarConverter(void);
 
-    
+    ScalarConverter & operator =(ScalarConverter const & src);
 
 };
 
