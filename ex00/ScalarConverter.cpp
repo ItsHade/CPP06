@@ -26,6 +26,17 @@ ScalarConverter & ScalarConverter::operator =(ScalarConverter const & src)
     return (*this);
 }
 
+bool isInt(std::string literal)
+{
+    std::stringstream sstr;
+    int a;
+
+    sstr >> a;
+    if (!(sstr.fail() && sstr.eof()))
+        return (true);
+    return (false);
+}
+
 void ScalarConverter::convert(std::string literal)
 {
     // Convert to char
