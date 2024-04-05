@@ -3,7 +3,9 @@
 
 #include <iostream>
 #include <string>
-#include <stdint.h>
+#include <cstdlib>
+
+typedef unsigned long uintptr_t;
 
 typedef struct
 {
