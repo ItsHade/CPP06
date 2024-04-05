@@ -4,6 +4,16 @@
 #include <iostream>
 #include <string>
 #include <sstream>
+#include <stdlib.h> 
+
+enum types
+{
+    INVALID,
+    CHAR,
+    INT,
+    FLOAT,
+    DOUBLE
+};
 
 class ScalarConverter
 {
@@ -21,5 +31,11 @@ private :
     ScalarConverter & operator =(ScalarConverter const & src);
 
 };
+
+bool isInt(std::string literal);
+
+bool isDouble(std::string literal);
+
+bool isFloat(std::string literal);
 
 #endif

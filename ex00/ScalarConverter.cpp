@@ -28,46 +28,102 @@ ScalarConverter & ScalarConverter::operator =(ScalarConverter const & src)
 
 bool isInt(std::string literal)
 {
-    std::stringstream sstr;
+    std::stringstream sstr(literal);
     int a;
 
     sstr >> a;
-    if (!(sstr.fail() && sstr.eof()))
+    if (!sstr.fail() && sstr.eof())
         return (true);
     return (false);
 }
 
+bool isDouble(std::string literal)
+{
+    std::stringstream sstr(literal);
+    double a;
+
+    sstr >> a;
+    if (!sstr.fail() && sstr.eof())
+        return (true);
+    return (false);
+}
+
+bool isFloat(std::string literal)
+{
+    if (literal[literal.length() - 1] == 'f')
+        literal = literal.erase(literal.length() - 1);
+
+    std::stringstream sstr(literal);
+    float a;
+
+    sstr >> a;
+    if (!sstr.fail() && sstr.eof())
+        return (true);
+    return (false);
+}
+
+void printDataType(types t)
+{
+	switch (t)
+	{
+		case INT:		{ std::cout << "Input type found: INT" << std::endl; break; }
+		case CHAR:		{ std::cout << "Input type found: CHAR" << std::endl; break; }
+		case FLOAT:		{ std::cout << "Input type found: FLOAT" << std::endl; break; }
+		case DOUBLE:	{ std::cout << "Input type found: DOUBLE" << std::endl; break; }
+		default:		break;
+	}
+}
+
+int getType(std::string literal)
+{
+    int type = 0;
+    if (literal.size() == 1 && !isdigit(literal[0]) && isprint(literal[0])) 
+        type = CHAR;
+    else if (literal == "-inff" || literal == "+inff" || literal == "nanf")
+        type = FLOAT;
+    else if (literal == "-inf" || literal == "+inf" || literal == "nan")
+        type = DOUBLE;
+    else if (literal.find('.') != std::string::npos)
+    {
+        if (isDouble(literal))
+            type = DOUBLE;
+        else if (isFloat(literal))
+            type = FLOAT;
+    }
+    else if (isInt(literal))
+        type = INT;
+    else
+        type = INVALID;
+    return (type);
+}
+
 void ScalarConverter::convert(std::string literal)
 {
-    // Convert to char
-    if (literal.size() == 3 && literal[0] == '\'' && literal[2] == '\'') {
-        char value = literal[1];
-        std::cout << "Char: " << value << std::endl;
-    }
-    // Convert to int
-    else {
-        std::istringstream iss(literal);
-        int intValue;
-        iss >> intValue;
-        if (!iss.fail() && iss.eof()) {
-            std::cout << "Int: " << intValue << std::endl;
-        } else {
-            iss.clear();
-            float floatValue;
-            iss >> floatValue;
-            if (!iss.fail() && iss.eof()) {
-                std::cout << "Float: " << floatValue << std::endl;
-            } else {
-                iss.clear();
-                double doubleValue;
-                iss >> doubleValue;
-                if (!iss.fail() && iss.eof()) {
-                    std::cout << "Double: " << doubleValue << std::endl;
-                } else {
-                    std::cout << "Invalid input" << std::endl;
-                }
-            }
+    int type = getType(literal);
+    double d = std::strtod(literal.c_str(), NULL);
+
+    // std::cout << "d: " << d << std::endl;
+    // printDataType(t);
+    switch (type)
+    {
+        case INVALID:
+            std::cout << "Invalid input!" << std::endl;
+            break;
+        case CHAR:
+        {
+            std::cout << "Char: " << static_cast<char>(literal[0]) << std::endl;
+            std::cout << "Int: " << static_cast<int>(literal[0]) << std::endl;
+            std::cout << "Float: " << static_cast<float>(literal[0]) << std::endl;
+            std::cout << "Double: " << static_cast<double>(literal[0]) << std::endl;
+            break;
+        }
+        case INT:
+        {
+            std::cout << "Char: " << static_cast<char>(d) << std::endl;
+            std::cout << "Int: " << static_cast<int>(d) << std::endl;
+            std::cout << "Float: " << static_cast<float>(d) << std::endl;
+            std::cout << "Double: " << static_cast<double>(d) << std::endl;
+            break;
         }
     }
-    return ;
 }
