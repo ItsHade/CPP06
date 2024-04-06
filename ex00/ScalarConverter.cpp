@@ -126,7 +126,7 @@ void ScalarConverter::convert(std::string literal)
         }
         case FLOAT:
         {
-            float nb = stringToInt(literal);
+            float nb = stringToFloat(literal);
             printChar(static_cast<char>(nb));
             printInt(static_cast<int>(nb));
             printFloat(nb);
@@ -135,7 +135,7 @@ void ScalarConverter::convert(std::string literal)
         }
         case DOUBLE:
         {
-            double nb = stringToInt(literal);
+            double nb = stringToDouble(literal);
             printChar(static_cast<char>(nb));
             printInt(static_cast<int>(nb));
             printFloat(static_cast<float>(nb));
