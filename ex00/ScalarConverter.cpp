@@ -77,7 +77,7 @@ void printDataType(types t)
 int getType(std::string literal)
 {
     int type = 0;
-    if (literal.size() == 1 && !isdigit(literal[0]) && isprint(literal[0])) 
+    if (literal.size() == 1 && !isdigit(literal[0])) 
         type = CHAR;
     else if (literal == "-inff" || literal == "+inff" || literal == "nanf")
         type = FLOAT;
@@ -100,10 +100,7 @@ int getType(std::string literal)
 void ScalarConverter::convert(std::string literal)
 {
     int type = getType(literal);
-    double d = std::strtod(literal.c_str(), NULL);
 
-    // std::cout << "d: " << d << std::endl;
-    // printDataType(t);
     switch (type)
     {
         case INVALID:
@@ -111,19 +108,138 @@ void ScalarConverter::convert(std::string literal)
             break;
         case CHAR:
         {
-            std::cout << "Char: " << static_cast<char>(literal[0]) << std::endl;
-            std::cout << "Int: " << static_cast<int>(literal[0]) << std::endl;
-            std::cout << "Float: " << static_cast<float>(literal[0]) << std::endl;
-            std::cout << "Double: " << static_cast<double>(literal[0]) << std::endl;
+            char c = stringToChar(literal);
+            printChar(c);
+            printInt(c);
+            printFloat(c);
+            printDouble(c);
             break;
         }
         case INT:
         {
-            std::cout << "Char: " << static_cast<char>(d) << std::endl;
-            std::cout << "Int: " << static_cast<int>(d) << std::endl;
-            std::cout << "Float: " << static_cast<float>(d) << std::endl;
-            std::cout << "Double: " << static_cast<double>(d) << std::endl;
+            int nb = stringToInt(literal);
+            printChar(nb);
+            printInt(nb);
+            printFloat(nb);
+            printDouble(nb);
+            break;
+        }
+        case FLOAT:
+        {
+            float nb = stringToInt(literal);
+            printChar(nb);
+            printInt(nb);
+            printFloat(nb);
+            printDouble(nb);
+            break;
+        }
+        case DOUBLE:
+        {
+            double nb = stringToInt(literal);
+            printChar(nb);
+            printInt(nb);
+            printFloat(nb);
+            printDouble(nb);
             break;
         }
     }
+}
+
+void ScalarConverter::printChar(const char c)
+{
+    std::cout << "Char: ";
+    if (c < 32 || c > 126)
+        std::cout << "Non displayable";
+    else
+        std::cout << "'" << c << "'";
+    std::cout << std::endl;
+    return ;
+}
+
+void ScalarConverter::printInt(const int nb)
+{
+    std::cout << "Int: ";
+    std::cout << nb << std::endl;
+    return ;
+}
+
+void ScalarConverter::printFloat(const float nb)
+{
+    std::cout << "Float: ";
+    std::cout << nb;
+    if (nb != std::numeric_limits<float>::infinity() && nb != -std::numeric_limits<float>::infinity()
+        && (nb - floor(nb)) <= 0.0f)
+            std::cout << ".0";
+    std::cout << "f" << std::endl;
+    return ;
+}
+
+void ScalarConverter::printDouble(const double nb)
+{
+    std::cout << "Double: ";
+    std::cout << nb;
+    if (nb != std::numeric_limits<double>::infinity() && nb != -std::numeric_limits<double>::infinity()
+        && (nb - floor(nb)) <= 0.0f)
+            std::cout << ".0";
+    std::cout << std::endl;
+    return ;
+}
+
+char ScalarConverter::stringToChar(std::string const & literal)
+{
+    std::istringstream sstr(literal);
+    char c;
+
+    sstr >> c;
+    if (literal[0] == ' ')
+        c = ' ';
+    return (c);
+}
+
+int ScalarConverter::stringToInt(std::string const & literal)
+{
+    std::istringstream sstr(literal);
+    int nb;
+
+    sstr >> nb;
+    return (nb);
+    
+}
+
+float ScalarConverter::stringToFloat(std::string const & literal)
+{
+    std::istringstream sstr(literal);
+    float nb;
+
+    sstr >> nb;
+    if (sstr.fail()) 
+    {
+        if (literal == "+inff")
+            nb = std::numeric_limits<float>::infinity();
+        else if (literal == "-inff")
+            nb = -std::numeric_limits<float>::infinity();
+        else if (literal == "nanf")
+            nb = std::numeric_limits<float>::quiet_NaN();
+    }
+    return (nb);
+}
+
+
+double ScalarConverter::stringToDouble(std::string const & literal)
+{
+    std::istringstream sstr(literal);
+    double nb;
+
+    sstr >> nb;
+    if (sstr.fail()) 
+    {
+        if (literal == "+inf")
+            nb = std::numeric_limits<double>::infinity();
+        else if (literal == "-inf")
+            nb = -std::numeric_limits<double>::infinity();
+        else if (literal == "nan")
+            nb = std::numeric_limits<double>::quiet_NaN();
+    }
+    return (nb);
+    
 }
