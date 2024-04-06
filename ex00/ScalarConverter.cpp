@@ -110,35 +110,35 @@ void ScalarConverter::convert(std::string literal)
         {
             char c = stringToChar(literal);
             printChar(c);
-            printInt(c);
-            printFloat(c);
-            printDouble(c);
+            printInt(static_cast<int>(c));
+            printFloat(static_cast<float>(c));
+            printDouble(static_cast<double>(c));
             break;
         }
         case INT:
         {
             int nb = stringToInt(literal);
-            printChar(nb);
+            printChar(static_cast<char>(nb));
             printInt(nb);
-            printFloat(nb);
-            printDouble(nb);
+            printFloat(static_cast<float>(nb));
+            printDouble(static_cast<double>(nb));
             break;
         }
         case FLOAT:
         {
             float nb = stringToInt(literal);
-            printChar(nb);
-            printInt(nb);
+            printChar(static_cast<char>(nb));
+            printInt(static_cast<int>(nb));
             printFloat(nb);
-            printDouble(nb);
+            printDouble(static_cast<double>(nb));
             break;
         }
         case DOUBLE:
         {
             double nb = stringToInt(literal);
-            printChar(nb);
-            printInt(nb);
-            printFloat(nb);
+            printChar(static_cast<char>(nb));
+            printInt(static_cast<int>(nb));
+            printFloat(static_cast<float>(nb));
             printDouble(nb);
             break;
         }
